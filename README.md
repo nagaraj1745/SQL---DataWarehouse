@@ -8,7 +8,6 @@ It covers the complete lifecycle:
 - Data Warehouse schema (dimensions & fact tables)
 - Automated ETL execution
 
-The project is designed for **portfolio showcasing** and mimics real-world enterprise HR analytics.
 
 ---
 
