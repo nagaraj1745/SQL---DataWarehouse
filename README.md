@@ -1,19 +1,24 @@
-# HR Data Warehouse Project (SQL Server)
+# 📊 HR Data Warehouse Project (SQL Server)
 
 ## 📌 Overview
 This project demonstrates how to build an end-to-end **Data Warehouse** using **SQL Server**.  
-It includes staging, transformation, dimension/fact tables, stored procedures, and ETL automation.
+It covers the complete lifecycle:
+- Data ingestion (CSV to staging)
+- Transformation (ETL logic via Stored Procedure)
+- Data Warehouse schema (dimensions & fact tables)
+- Automated ETL execution
+
+The project is designed for **portfolio showcasing** and mimics real-world enterprise HR analytics.
+
+---
 
 ## 🏗️ Architecture
-- **Staging schema** → Raw data from CSVs
-- **DW schema** → Cleaned and structured tables
-  - DimEmployee
-  - DimTitle
-  - DimDate
-  - FactPerformance
 
-## ⚙️ Steps
-1. Load CSV data into staging (`BULK INSERT`).
-2. Run stored procedures:
-   ```sql
-   EXEC DW.sp_RunETL;
+### 🔹 Staging Schema
+Stores raw CSV data before transformation.
+
+### 🔹 Data Warehouse (DW) Schema
+- **DimEmployee** → Employee master data  
+- **DimTitle** → Employee job titles  
+- **DimDate** → Standardized date dimension  
+- **FactPerformance** → Performance and bonus metrics  
