@@ -1,0 +1,101 @@
+EmpID,First Name,LastName,Gender,DOB,Hire Dt,Job_Title,Department,Location
+1001,Anita,Khan,Female,02-04-1961,25-08-2020,,,NYC
+1002,Priya,Lopez,?,01/22/1966,22-09-2009,HR specialist,Finance,singapore
+1001,Priya,Garcia,female,07-06-1983,20-11-2021,sr manager,Finance,dubai
+1004,Li,Lopez,Female,09-12-1978,,sr manager,FIN,new york
+1005,David,Lopez,Male,03-03-1975,07-02-2011,Project Mgr,IT,LONDON
+1006,Carlos,Lee,M,13-11-1975,19-01-2014,developer,Finance,dubai
+1007,Ahmed,Lee,M,08/16/1973,19-05-2010,sr manager,IT,LONDON
+1008,Anita,Smith,F,16-03-1992,15-06-2019,HR specialist,Analytics,dubai
+1009,Carlos,Smith,,01-05-1985,,Data Analyst,operations,NYC
+1010,Priya,Smith,Female,09-02-1974,19-03-2015,Finance Manager,Analytics,Hyderabad
+1011,Li,Kumar,male,07-11-1974,09-Feb-06,sr manager,operations,dubai
+1012,Maria,Lopez,M,01-02-1992,16-01-2022,,,singapore
+1013,Anita,Garcia,?,24-12-1967,,NaN,hr,Hyderabad
+1001,Maria,Khan,Male,19-09-1962,,Finance Manager,FIN,bangalore
+1015,David,Reddy,Female,03-03-1971,12-04-2009,developer,,singapore
+1016,John,Wang,,15-06-1972,01-Nov-20,Finance Manager,Analytics,NYC
+1017,Priya,Lopez,,07-07-1961,11-Jul-06,NaN,IT,NYC
+1018,John,Kumar,Male,09-10-1976,22-02-2014,Project Mgr,NaN,Hyderabad
+1019,David,Wang,male,05/16/1987,17-06-2016,,FIN,LONDON
+1001,Maria,Reddy,male,06-06-1993,01-03-2017,Finance Manager,FIN,dubai
+1021,Carlos,Garcia,F,08-06-1967,20-01-2010,HR specialist,IT,dubai
+1022,David,Smith,Female,08-07-1968,,NaN,,LONDON
+1023,Li,Kumar,?,07-01-1978,11-06-2016,sr manager,hr,Hyderabad
+1024,Ahmed,Wang,?,04-06-1991,18-06-2005,Data Analyst,NaN,new york
+1025,Ahmed,Lee,,22-04-1985,19-06-2018,,IT,singapore
+1026,Anita,Smith,?,01-06-1976,07-11-2012,sr manager,IT,LONDON
+1027,John,Smith,,24-06-1979,24-03-2006,Finance Manager,Analytics,bangalore
+1028,Anita,Wang,male,10/21/1981,08-03-2021,Finance Manager,FIN,singapore
+1001,John,Smith,F,06-05-2000,28-May-18,Software Engineer,hr,Hyderabad
+1030,Carlos,Lopez,male,01-05-1985,11-08-2010,Data Analyst,FIN,NYC
+1031,Carlos,Wang,male,15-01-1964,09-Sep-19,sr manager,Analytics,Hyderabad
+1032,John,Wang,F,14-08-1988,04-10-2012,Data Analyst,Analytics,NYC
+1033,Maria,Smith,male,09/19/1960,06-06-2017,Software Engineer,Finance,singapore
+1034,Anita,Lee,M,19-09-1990,04-Jan-07,Software Engineer,FIN,new york
+1035,Maria,Reddy,Male,24-05-1992,19-Jul-21,Software Engineer,hr,bangalore
+1036,Anita,Lopez,M,08-10-1973,,HR specialist,Finance,Hyderabad
+1037,Carlos,Kumar,Male,17-04-1967,20-09-2017,,FIN,new york
+1038,Li,Wang,Female,16-07-1972,15-08-2021,sr manager,FIN,LONDON
+1039,David,Kumar,?,06/18/1963,21-01-2018,Project Mgr,,NYC
+1040,Li,Reddy,female,19-09-1997,22-09-2021,,,new york
+1041,Anita,Khan,Female,16-12-1969,26-05-2020,,operations,new york
+1042,Anita,Lee,F,15-09-1960,,developer,Analytics,dubai
+1001,Ahmed,Kumar,male,09-11-1966,10-08-2009,sr manager,,bangalore
+1044,Maria,Smith,M,16-01-1982,28-Mar-16,Data Analyst,hr,Hyderabad
+1045,Carlos,Lee,Female,04-12-1968,05-10-2012,HR specialist,Analytics,new york
+1046,Anita,Kumar,?,26-03-1984,05-06-2007,Software Engineer,Finance,Hyderabad
+1047,Maria,Kumar,M,09/20/1979,,Finance Manager,,singapore
+1048,Li,Khan,F,13-03-1990,14-07-2008,Finance Manager,FIN,bangalore
+1001,Anita,Reddy,Female,04-10-1991,04-06-2020,developer,hr,bangalore
+1050,Maria,Lee,?,08-12-1994,15-09-2014,NaN,NaN,new york
+1051,David,Garcia,female,04-09-1988,12-02-2008,sr manager,Analytics,Hyderabad
+1052,,Lopez,female,17-05-1965,02-Jul-20,NaN,FIN,dubai
+1053,Li,Wang,F,04-10-1978,08-02-2011,Data Analyst,hr,dubai
+1054,Carlos,Wang,,14-08-1969,12-01-2018,NaN,IT,LONDON
+1055,Li,Kumar,?,21-02-1961,17-12-2020,NaN,,Hyderabad
+1001,John,Garcia,M,05-10-1975,,Data Analyst,Finance,LONDON
+1057,Maria,Lee,M,15-09-1960,,,Finance,Hyderabad
+1058,David,Kumar,Female,09-06-1972,05-Dec-05,NaN,FIN,bangalore
+1059,Priya,Wang,,06-10-1979,14-Jan-18,developer,Finance,Hyderabad
+1060,David,Lee,,18-09-1988,09-04-2015,Data Analyst,hr,Hyderabad
+1061,Maria,Wang,female,11-06-1960,27-Apr-08,HR specialist,FIN,new york
+1062,John,Khan,male,15-05-1979,17-01-2012,developer,IT,NYC
+1063,Carlos,Lee,Female,27-06-1994,15-Jan-16,Data Analyst,hr,NYC
+1064,Ahmed,Kumar,,13-10-1967,23-03-2016,Project Mgr,IT,dubai
+1065,John,Wang,M,06/21/1989,08-Jul-19,Data Analyst,Analytics,Hyderabad
+1066,Ahmed,Smith,Male,12-03-1993,22-11-2020,sr manager,FIN,dubai
+1067,,Smith,?,23-10-1997,,Software Engineer,operations,new york
+1068,Ahmed,Garcia,female,09-01-2000,11-Feb-10,Finance Manager,operations,dubai
+1069,Anita,Garcia,F,03-01-1984,25-12-2010,sr manager,NaN,bangalore
+1070,Priya,Wang,Female,16-02-1984,15-Nov-10,Project Mgr,,bangalore
+1071,,Reddy,male,08-04-1976,,Finance Manager,Finance,Hyderabad
+1072,Li,Kumar,F,07-09-1979,18-01-2014,sr manager,IT,bangalore
+1073,Priya,Wang,,10-06-1970,08-06-2016,NaN,IT,NYC
+1074,Carlos,Reddy,Female,03-07-1970,23-03-2018,,IT,NYC
+1075,Anita,Kumar,female,07-12-1999,,Project Mgr,IT,new york
+1076,Li,Lopez,M,11-11-2000,15-12-2020,HR specialist,Analytics,Hyderabad
+1077,Li,Garcia,,22-09-1978,11-02-2005,,,NYC
+1078,John,Lee,F,16-06-1997,15-12-2020,NaN,FIN,new york
+1079,John,Garcia,?,03-02-1975,07-12-2021,developer,Finance,NYC
+1080,,Garcia,female,19-03-1989,23-07-2008,Finance Manager,NaN,LONDON
+1081,Carlos,Reddy,male,12-07-1999,19-12-2012,developer,IT,singapore
+1082,Anita,Lopez,male,10-03-1963,04-12-2014,Project Mgr,operations,bangalore
+1001,Li,Lee,Female,03-04-1987,06-05-2014,sr manager,operations,singapore
+1084,,Garcia,Male,15-05-1996,21-09-2013,sr manager,Analytics,bangalore
+1085,,Kumar,female,04-11-1962,18-07-2018,sr manager,Analytics,Hyderabad
+1086,John,Kumar,?,14-11-1979,24-06-2010,developer,Analytics,bangalore
+1087,Anita,Kumar,Female,12-01-1995,15-Aug-17,Finance Manager,NaN,singapore
+1088,Anita,Wang,,02-03-1980,09-07-2009,developer,FIN,dubai
+1089,,Khan,Male,02-12-1980,15-02-2017,developer,FIN,bangalore
+1090,Ahmed,Kumar,?,04-06-1977,10-08-2008,Data Analyst,FIN,NYC
+1091,Maria,Lee,?,02-07-1960,19-12-2021,Finance Manager,FIN,LONDON
+1001,Priya,Khan,Female,24-12-1971,01-11-2019,Project Mgr,Analytics,Hyderabad
+1093,Priya,Khan,M,24-09-1969,08-09-2012,Data Analyst,hr,bangalore
+1094,Anita,Reddy,Female,20-10-1980,16-01-2021,Finance Manager,FIN,LONDON
+1095,John,Wang,M,07-05-1974,08-07-2007,Software Engineer,NaN,dubai
+1096,Li,Smith,,27-02-1982,,NaN,IT,LONDON
+1097,,Wang,male,10-06-1960,07-05-2013,,Analytics,bangalore
+1098,Ahmed,Smith,Male,02/18/1979,20-01-2013,,operations,NYC
+1099,Carlos,Garcia,F,20-06-1977,,Data Analyst,NaN,LONDON
+1100,Carlos,Lopez,F,27-07-1992,27-07-2015,sr manager,operations,singapore
