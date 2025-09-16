@@ -1,98 +1,282 @@
 
--- Show store details with average sales  -- Subquery from SELECT clause
+-- ===================================================
+-- 1. Create Database & Schemas
+-- ===================================================
 
-SELECT DISTINCT StoreID,Restaurant_Name,  
+CREATE DATABASE HR_Project;
+GO
 
-	( SELECT  CAST(ROUND(AVG(TotalSales),0) AS int)  FROM PROJECT.DBO.FACTJOIN AS F
-	WHERE D.StoreID = F.StoreID) AS Average FROM PROJECT.DBO.FACTJOIN AS D
-	
+USE HR_Project;
+GO
 
- -- Find Store that has sales greater than average value  -- Subquery from FROM clause
+CREATE SCHEMA Staging;
+GO
 
-SELECT Restaurant_Name,Sales,Average FROM (
-			SELECT Restaurant_Name,CAST(ROUND(TotalSales,0) AS int) AS Sales, 
-			CAST(ROUND(AVG(TotalSales) OVER(),0) AS int) AS Average  
-			FROM PROJECT.DBO.FACTJOIN ) as rw
-WHERE Sales > Average ;
-
--- Rank Restaurant_Name based on their totalsales -- Subquery from FROM clause
-
-SELECT Restaurant_Name , RANK() OVER(ORDER BY Sales DESC ) as RankSales from   
-
-		(SELECT Restaurant_Name, CAST(coalesce(ROUND(SUM(TotalSales),0),0) AS int) as Sales 
-		FROM  Project.DBO.FACTJOIN
-		GROUP BY Restaurant_Name ) as DT  
-
--- Show the storeid's, names, sales, total no of orders -- Subquery from WHERE & LEFTJOIN clause
+CREATE SCHEMA DW;
+GO
 
 
-SELECT M.StoreID, M.Restaurant_Name,M.TotalSales, S.Orders
-	from Project.dbo.FACTJOIN AS M   
-	LEFT JOIN 
-			( SELECT StoreID, COUNT(*) AS Orders 
-			FROM Project.DBO.FACTJOIN  
-			GROUP BY StoreID ) 
-	AS S ON M.StoreID = S.StoreID
+-- ===================================================
+-- 2. Staging Tables (Raw Data)
+-- ===================================================
+
+-- Employee Staging
+IF OBJECT_ID('Staging.Employee_raw','U') IS NOT NULL
+    DROP TABLE Staging.Employee_raw;
+GO
+
+CREATE TABLE Staging.Employee_raw (
+    EmployeeID   VARCHAR(50),         
+    FirstName    VARCHAR(100),
+    LastName     VARCHAR(100),
+    Gender       VARCHAR(50),
+    Department   VARCHAR(100),
+    JobTitle     VARCHAR(100),
+    HireDate     VARCHAR(50),          
+    Salary       VARCHAR(50),             
+    ManagerID    VARCHAR(50),
+    Email        VARCHAR(150),
+    Location     VARCHAR(100)
+);
+GO
+
+-- Performance Staging
+IF OBJECT_ID('Staging.Performance_raw','U') IS NOT NULL
+    DROP TABLE Staging.Performance_raw;
+GO
+
+CREATE TABLE Staging.Performance_raw (
+    ReviewID          VARCHAR(50),
+    EmployeeID        VARCHAR(50),         
+    ReviewDate        VARCHAR(50),
+    PerformanceScore  VARCHAR(50),   
+    Reviewer          VARCHAR(100),
+    Comments          VARCHAR(MAX)
+);
+GO
 
 
- -- Find Store that has sales greater than average value  -- Subquery from WHERE clause
+-- ===================================================
+-- 3. DW Tables (Dimensions & Fact)
+-- ===================================================
 
- SELECT Restaurant_Name,CAST(ROUND(TotalSales,0)AS INT) as Sales,
-	CAST(ROUND((SELECT AVG(TotalSales) as Average FROM Project.dbo.FACTJOIN),0) AS INT) as Average
-	FROM Project.DBO.FACTJOIN
-	WHERE TotalSales > (SELECT AVG(TotalSales) as Average FROM Project.dbo.FACTJOIN)
-       
-		
--- Find store details made during high traffic
+CREATE TABLE DW.DimEmployee (
+    EmpID        INT PRIMARY KEY,        
+    EmployeeName NVARCHAR(150) NOT NULL, 
+    Gender       NVARCHAR(20)  NULL,     
+    DOB          DATE          NULL,     
+    HireDate     DATE          NULL,     
+    JobTitle     NVARCHAR(100) NULL,     
+    Location     NVARCHAR(100) NULL,     
+    Department   NVARCHAR(100) NULL,     
+    ExpLevel     NVARCHAR(50)  NULL      
+);
+GO
 
-SELECT * FROM Project.DBO.FACTJOIN
-WHERE StoreID in 
-( SELECT StoreID FROM Project.DBO.FACTJOIN WHERE Traffic_Level = 'High')
+CREATE TABLE DW.FactPerformance (
+    EmpID         INT NOT NULL,  
+    ReviewDate    DATE NOT NULL,  
+    Rating        INT NULL,  
+    Bonus         DECIMAL(10,2) NULL,  
+    AnnualReview  NVARCHAR(20) NULL,  
+    Promoted      NVARCHAR(3) NULL
+);
+GO
 
-SELECT * FROM Project.DBO.FACTJOIN
+-- DimDate
+IF OBJECT_ID('DW.DimDate','U') IS NOT NULL
+    DROP TABLE DW.DimDate;
+GO
 
--- find sales traffic level where medium is greater than any high leve -- > ANY vs > ALL
+CREATE TABLE DW.DimDate (
+    DateKey     INT PRIMARY KEY,        
+    FullDate    DATE NOT NULL,
+    Day         INT,
+    Month       INT,
+    MonthName   NVARCHAR(20),
+    Quarter     INT,
+    Year        INT,
+    WeekOfYear  INT,
+    DayOfWeek   INT,
+    DayName     NVARCHAR(20)
+);
+GO
 
-SELECT Restaurant_Name, Traffic_Level , TotalSales FROM Project.dbo.FACTJOIN
-WHERE Traffic_Level = 'Low' and TotalSales > ANY
-(SELECT   TotalSales FROM Project.dbo.FACTJOIN WHERE Traffic_Level = 'High')
-
-SELECT Restaurant_Name, Traffic_Level , TotalSales FROM Project.dbo.FACTJOIN
-WHERE Traffic_Level = 'Low' and TotalSales > ALL
-(SELECT   TotalSales FROM Project.dbo.FACTJOIN WHERE Traffic_Level = 'High')
-
-
--- Find Storeid who match both storid and traffic level
-
-SELECT * FROM Project.DBO.FACTJOIN
-WHERE StoreID IN ( SELECT StoreID FROM Project.DBO.FACTJOIN WHERE Traffic_Level = 'High')
-AND Traffic_Level = 'High'
-
-
--- Identify or remove duplicates 
-
-SELECT StoreID,Count(*) as Total FROM Project.DBO.FACTJOIN
-GROUP BY StoreID
-Having Count(*) = 1  -- Remove duplicates
-
-SELECT StoreID,Count(*) as Total FROM Project.DBO.FACTJOIN
-GROUP BY StoreID
-Having Count(*) > 1  -- Identify duplicates
-
-
--- find out TopN
-
-SELECT * FROM 
-
-	( SELECT  Restaurant_Name,TotalSales, ROW_NUMBER() OVER (ORDER BY TotalSales DESC) AS ROWRANK -- SubQuery
-
-FROM Project.DBO.FACTJOIN ) RANKED
-WHERE ROWRANK < = 1
+-- DimTitle
+CREATE TABLE DW.DimTitle (
+    TitleID     INT IDENTITY(1,1) PRIMARY KEY,
+    JobTitle    NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(200) NULL
+);
+GO
 
 
---RankingFunctions
+-- ===================================================
+-- 4. Bulk Insert CSVs
+-- ===================================================
 
-SELECT Restaurant_Name, Traffic_Level, TotalSales, ROW_NUMBER() OVER (ORDER BY TotalSales DESC ) AS ROWRANKED,
-RANK() OVER (ORDER BY TotalSales DESC ) AS RANKED, DENSE_RANK() OVER (ORDER BY TotalSales DESC ) AS DENSE
+BULK INSERT Staging.Employee_raw
+FROM 'C:\Users\nraj6\source\Datasets\Employee.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    TABLOCK
+);
+GO
 
-FROM Project.DBO.FACTJOIN
+BULK INSERT Staging.Performance_raw
+FROM 'C:\Users\nraj6\source\Datasets\Performance.csv'
+WITH (
+    FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    TABLOCK
+);
+GO
+
+
+-- ===================================================
+-- 5. Stored Procedures (ETL: Clean & Load)
+-- ===================================================
+
+-- SP: Load DimEmployee
+IF OBJECT_ID('DW.sp_LoadDimEmployee','P') IS NOT NULL
+    DROP PROCEDURE DW.sp_LoadDimEmployee;
+GO
+
+CREATE PROCEDURE DW.sp_LoadDimEmployee
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    WITH CTE_Employee AS (
+        SELECT *,
+               ROW_NUMBER() OVER (PARTITION BY TRIM(EmployeeID) ORDER BY HireDate DESC) AS rn
+        FROM Staging.Employee_raw
+    )
+    INSERT INTO DW.DimEmployee
+    (EmpID, EmployeeName, Gender, DOB, HireDate, JobTitle, Location, Department, ExpLevel)
+    SELECT 
+        TRY_CAST(TRIM(EmployeeID) AS INT) AS EmpID,
+        UPPER(LEFT(FirstName,1)) + LOWER(SUBSTRING(FirstName,2,LEN(FirstName))) + ' ' +
+        UPPER(LEFT(LastName,1)) + LOWER(SUBSTRING(LastName,2,LEN(LastName))) AS EmployeeName,
+        CASE 
+            WHEN Gender = 'M' THEN 'Male'
+            WHEN Gender = 'F' THEN 'Female'
+            WHEN Gender IS NULL OR Gender = '?' THEN 'Not declared'
+            ELSE UPPER(LEFT(Gender,1)) + LOWER(SUBSTRING(Gender,2,LEN(Gender)))
+        END AS Gender,
+        TRY_CONVERT(DATE, DOB, 104),
+        TRY_CONVERT(DATE, HireDate, 104),
+        JobTitle,
+        CASE 
+            WHEN LOWER(Location) LIKE '%bangalore%' THEN 'Bangalore'
+            WHEN LOWER(Location) LIKE '%dubai%' THEN 'Dubai'
+            WHEN LOWER(Location) LIKE '%hyderabad%' THEN 'Hyderabad'
+            WHEN LOWER(Location) LIKE '%london%' THEN 'London'
+            WHEN LOWER(Location) LIKE '%new york%' OR LOWER(Location) LIKE '%nyc%' THEN 'New York'
+            WHEN LOWER(Location) LIKE '%singapore%' THEN 'Singapore'
+            ELSE 'Unknown'
+        END AS Location,
+        CASE 
+            WHEN LOWER(Department) LIKE '%fin%' THEN 'Finance'
+            WHEN LOWER(Department) LIKE '%it%' THEN 'IT'
+            WHEN LOWER(Department) LIKE '%hr%' THEN 'HR'
+            WHEN LOWER(Department) LIKE '%analytics%' THEN 'Analytics'
+            WHEN LOWER(Department) LIKE '%operation%' THEN 'Operations'
+            ELSE 'Unknown'
+        END AS Department,
+        CAST(DATEDIFF(MONTH, TRY_CONVERT(DATE,HireDate,104), GETDATE()) / 12 AS NVARCHAR(4)) + ' Year ' +
+        CAST(DATEDIFF(MONTH, TRY_CONVERT(DATE,HireDate,104), GETDATE()) % 12 AS NVARCHAR(4)) + ' Month' AS ExpLevel
+    FROM CTE_Employee
+    WHERE rn = 1;
+END;
+GO
+
+
+-- SP: Load FactPerformance
+IF OBJECT_ID('DW.sp_LoadFactPerformance','P') IS NOT NULL
+    DROP PROCEDURE DW.sp_LoadFactPerformance;
+GO
+
+CREATE PROCEDURE DW.sp_LoadFactPerformance
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO DW.FactPerformance (EmpID, ReviewDate, Rating, Bonus, AnnualReview, Promoted)
+    SELECT 
+        TRY_CAST(EmployeeID AS INT),
+        TRY_CONVERT(DATE, ReviewDate, 104),
+        TRY_CAST(PerformanceScore AS INT),
+        TRY_CAST(Bonus AS DECIMAL(10,2)),
+        CASE 
+            WHEN TRY_CAST(PerformanceScore AS INT) > 5 THEN 'Excellent'
+            WHEN TRY_CAST(PerformanceScore AS INT) BETWEEN 3 AND 5 THEN 'Good'
+            WHEN TRY_CAST(PerformanceScore AS INT) >= 0 AND TRY_CAST(PerformanceScore AS INT) < 3 THEN 'Average'
+            ELSE 'Unknown'
+        END AS AnnualReview,
+        CASE WHEN Promotion = '1' THEN 'Yes' ELSE 'No' END
+    FROM Staging.Performance_raw;
+END;
+GO
+
+
+-- SP: Load DimTitle
+IF OBJECT_ID('DW.sp_LoadDimTitle','P') IS NOT NULL
+    DROP PROCEDURE DW.sp_LoadDimTitle;
+GO
+
+CREATE PROCEDURE DW.sp_LoadDimTitle
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO DW.DimTitle (JobTitle)
+    SELECT DISTINCT JobTitle
+    FROM DW.DimEmployee
+    WHERE JobTitle IS NOT NULL;
+END;
+GO
+
+
+-- SP: Load DimDate
+IF OBJECT_ID('DW.sp_LoadDimDate','P') IS NOT NULL
+    DROP PROCEDURE DW.sp_LoadDimDate;
+GO
+
+CREATE PROCEDURE DW.sp_LoadDimDate
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    WITH DateSeries AS (
+        SELECT CAST('2000-01-01' AS DATE) AS d
+        UNION ALL
+        SELECT DATEADD(DAY, 1, d) FROM DateSeries WHERE d < '2030-12-31'
+    )
+    INSERT INTO DW.DimDate
+    SELECT 
+        CONVERT(INT, FORMAT(d, 'yyyyMMdd')) AS DateKey,
+        d AS FullDate,
+        DAY(d),
+        MONTH(d),
+        DATENAME(MONTH, d),
+        DATEPART(QUARTER, d),
+        YEAR(d),
+        DATEPART(WEEK, d),
+        DATEPART(WEEKDAY, d),
+        DATENAME(WEEKDAY, d)
+    FROM DateSeries
+    OPTION (MAXRECURSION 0);
+END;
+GO
+
+
+-- ===================================================
+-- 6. Run ETL (Execute Stored Procedures)
+-- ===================================================
+
+EXEC DW.sp_LoadDimEmployee;
+EXEC DW.sp_LoadDimTitle;
+EXEC DW.sp_LoadDimDate;
+EXEC DW.sp_LoadFactPerformance;
