@@ -22,11 +22,9 @@ Stores raw CSV data before transformation.
 - **DimDate** → Standardized date dimension  
 - **FactPerformance** → Performance and bonus metrics
 
-
 -- ===================================================
 -- 1. Create Database & Schemas
 -- ===================================================
-
 CREATE DATABASE HR_Project;
 GO
 
@@ -43,7 +41,6 @@ GO
 -- ===================================================
 -- 2. Staging Tables (Raw Data)
 -- ===================================================
-
 -- Employee Staging
 IF OBJECT_ID('Staging.Employee_raw','U') IS NOT NULL
     DROP TABLE Staging.Employee_raw;
@@ -83,7 +80,7 @@ GO
 -- ===================================================
 -- 3. DW Tables (Dimensions & Fact)
 -- ===================================================
-
+-- DimEmployee
 CREATE TABLE DW.DimEmployee (
     EmpID        INT PRIMARY KEY,        
     EmployeeName NVARCHAR(150) NOT NULL, 
@@ -97,6 +94,7 @@ CREATE TABLE DW.DimEmployee (
 );
 GO
 
+-- FactPerformance
 CREATE TABLE DW.FactPerformance (
     EmpID         INT NOT NULL,  
     ReviewDate    DATE NOT NULL,  
@@ -138,7 +136,6 @@ GO
 -- ===================================================
 -- 4. Bulk Insert CSVs
 -- ===================================================
-
 BULK INSERT Staging.Employee_raw
 FROM 'C:\Users\nraj6\source\Datasets\Employee.csv'
 WITH (
@@ -161,7 +158,6 @@ GO
 -- ===================================================
 -- 5. Stored Procedures (ETL: Clean & Load)
 -- ===================================================
-
 -- SP: Load DimEmployee
 IF OBJECT_ID('DW.sp_LoadDimEmployee','P') IS NOT NULL
     DROP PROCEDURE DW.sp_LoadDimEmployee;
@@ -299,7 +295,6 @@ GO
 -- ===================================================
 -- 6. Run ETL (Execute Stored Procedures)
 -- ===================================================
-
 EXEC DW.sp_LoadDimEmployee;
 EXEC DW.sp_LoadDimTitle;
 EXEC DW.sp_LoadDimDate;
