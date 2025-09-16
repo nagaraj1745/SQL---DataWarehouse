@@ -1,4 +1,5 @@
 # SQL - DataWarehouse Project
+End-to-end SQL Server Data Warehouse project with staging, dimension, and fact tables, stored procedures, and ETL process.
 
 
 Create Database HR_Project
